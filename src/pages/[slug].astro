@@ -1,56 +1,280 @@
 ---
-// Factory route: one page per client, generated from the data contract.
-// Proves Python→JSON→Astro: Python emits clients.json; Astro renders deterministically.
+// Premium trade site — ports the Design-Guild-approved flagship (Mara/Priya, v2
+// high-contrast black + ONE bold accent). Data-driven from the per-client contract.
+// Accent is genome-assigned per client (dna.accent) so every site is distinct on
+// the same premium frame. PII never here — display fields only.
 import clients from '../data/clients.json';
 
 export function getStaticPaths() {
   return clients.map((c) => ({ params: { slug: c.slug }, props: { c } }));
 }
-
 const { c } = Astro.props;
 
-// Closed CODE→component map demo (genome shape): unknown hero CODE = fail-loud at build.
+// Fail-loud genome: unknown hero CODE aborts the build (closed registry).
 const HEROES = { 'HERO-03': 'split-left', 'HERO-06': 'centered' };
-const heroLayout = HEROES[c.dna.hero];
-if (!heroLayout) throw new Error(`Unknown hero CODE ${c.dna.hero} for ${c.slug} — fail-closed`);
+if (!HEROES[c.dna.hero]) throw new Error(`Unknown hero CODE ${c.dna.hero} for ${c.slug} — fail-closed`);
+
+const tel = c.business_number_e164;
+const telDisplay = c.business_number_display;
+const aboutHtml = c.about_highlight
+  ? c.about_quote.replace(c.about_highlight, `<span class="hl">${c.about_highlight}</span>`)
+  : c.about_quote;
+const isGas = !!c.gas_safe_reg;
+const metaTitle = `${c.trade} in ${c.areas[0]} | ${c.business_name}`;
 ---
 
 <!doctype html>
 <html lang="en-GB">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{c.business_name} — {c.trade}</title>
-    <meta name="description" content={c.tagline} />
-    <link rel="canonical" href={`https://totm-astro-pilot.pages.dev/${c.slug}/`} />
-    <style define:vars={{ accent: c.dna.accent }}>
-      :root { --accent: var(--accent); --ink: #14110c; --paper: #faf8f4; }
-      * { box-sizing: border-box; }
-      body { margin: 0; font: 17px/1.6 system-ui, sans-serif; color: var(--ink); background: var(--paper); }
-      .hero { padding: 4rem 1.25rem; }
-      .hero.split-left { border-left: 8px solid var(--accent); }
-      .hero.centered { text-align: center; }
-      h1 { font-size: 2.4rem; margin: 0 0 .5rem; }
-      .tag { font-size: 1.2rem; color: #555; }
-      .cta { display: inline-block; margin-top: 1.25rem; padding: .75rem 1.25rem; background: var(--accent); color: #111; font-weight: 600; text-decoration: none; border-radius: 6px; }
-      ul { padding-left: 1.2rem; } main { max-width: 760px; margin: 0 auto; padding: 0 1.25rem 4rem; }
-      footer { padding: 2rem 1.25rem; color: #777; font-size: .9rem; }
-    </style>
-  </head>
-  <body>
-    <section class={`hero ${heroLayout}`}>
-      <main>
-        <h1>{c.business_name}</h1>
-        <p class="tag">{c.tagline}</p>
-        <a class="cta" href={`tel:${c.business_number}`}>Call us</a>
-      </main>
-    </section>
-    <main>
-      <h2>What we do</h2>
-      <ul>{c.services.map((s) => <li>{s}</li>)}</ul>
-      <h2>Areas covered</h2>
-      <p>{c.areas.join(' · ')}</p>
-    </main>
-    <footer>{c.business_name} · {c.trade} · family: {c.dna.family}</footer>
-  </body>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>{metaTitle}</title>
+<meta name="description" content={c.hero_sub} />
+<link rel="canonical" href={`https://totm-engine.pages.dev/${c.slug}/`} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style define:vars={{ accent: c.dna.accent, accentDeep: c.dna.accent_deep, accentSoft: c.dna.accent_soft }}>
+:root{
+  --ink:#0E0E10;--ink-2:#55555C;--paper:#FFFFFF;--paper-2:#F7F7F5;
+  --line:#E4E4E2;--line-dark:#2A2A2E;
+  --accent:var(--accent);--accent-deep:var(--accentDeep);--accent-soft:var(--accentSoft);
+  --green:#1E7A4D;--on-dark:#FFFFFF;--on-dark-2:#A9A9B0;
+  --display:'Archivo',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --wrap:1160px;
+  --t-hero:clamp(44px,7.4vw,84px);--t-h2:clamp(32px,4.6vw,52px);--t-num:clamp(40px,6vw,64px);--t-body:17px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;font-size:var(--t-body);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:1.0}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 40px}
+.kicker{display:inline-flex;align-items:center;gap:10px;color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;margin-bottom:20px}
+.kicker::before{content:"";width:28px;height:2px;background:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:700;font-size:16px;line-height:1;padding:18px 30px;border:0;cursor:pointer;transition:.14s ease;letter-spacing:-.01em}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-deep)}
+.btn-light{background:transparent;border:2px solid rgba(255,255,255,.85);color:#fff}.btn-light:hover{background:#fff;color:var(--ink)}
+.trustbar{background:var(--ink);color:var(--on-dark);border-bottom:1px solid var(--line-dark)}
+.trustbar-inner{max-width:var(--wrap);margin:0 auto;padding:11px 40px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.gs-lockup{display:flex;align-items:center;gap:11px}
+.gs-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;width:44px;height:44px;background:#FFD200;color:#111;font-family:var(--display);font-weight:900;font-size:11px;line-height:.95;text-align:center;border:2px solid #111;flex:none}
+.gs-badge span{font-size:7px;font-weight:800;letter-spacing:.4px;font-family:var(--sans);margin-top:1px}
+.cert-mark{display:flex;align-items:center;justify-content:center;height:44px;padding:0 12px;background:var(--accent);color:#fff;font-family:var(--display);font-weight:900;font-size:13px;letter-spacing:.02em;border:2px solid var(--accent)}
+.gs-text{font-size:13px;line-height:1.25}.gs-text strong{display:block;font-weight:800;font-size:13.5px}.gs-text .sub{color:var(--on-dark-2)}.gs-tick{color:#3FD98A;font-weight:800}
+.tb-div{width:1px;height:30px;background:var(--line-dark)}
+.ooh{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#fff}
+.dot{width:9px;height:9px;border-radius:50%;background:#3FD98A;animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(63,217,138,.55)}70%{box-shadow:0 0 0 7px rgba(63,217,138,0)}100%{box-shadow:0 0 0 0 rgba(63,217,138,0)}}
+.tb-spacer{margin-left:auto}.tb-stars{color:#fff;letter-spacing:2px;font-size:13px}.tb-meta{font-size:12.5px;color:var(--on-dark-2)}.tb-meta strong{color:#fff;font-weight:800}
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:var(--wrap);margin:0 auto;padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:var(--display);font-weight:900;font-size:21px;color:var(--ink);letter-spacing:-.04em;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:34px}
+.nav-links a{color:var(--ink);font-size:14.5px;font-weight:600;position:relative;padding:4px 0}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--accent);transition:width .16s}
+.nav-links a:hover::after{width:100%}
+.nav-call{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:700;font-size:14px;padding:12px 22px}.nav-call:hover{background:var(--accent-deep)}
+.hero{position:relative;min-height:640px;display:flex;align-items:flex-end;overflow:hidden;background:linear-gradient(100deg,rgba(14,14,16,.94),rgba(14,14,16,.74) 42%,rgba(14,14,16,.42)),radial-gradient(circle at 80% 22%,#2C2C33,#18181B 46%,#0B0B0D 82%)}
+.hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--accent);z-index:4}
+.photo-slot{position:absolute;top:20px;right:20px;z-index:3;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.5);padding:7px 13px}
+.hero-inner{position:relative;z-index:2;max-width:var(--wrap);margin:0 auto;padding:84px 40px;width:100%}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:12px;color:#fff;font-size:12.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:26px}
+.hero .eyebrow::before{content:"";width:32px;height:2px;background:var(--accent)}
+.hero h1{color:#fff;font-size:var(--t-hero);font-weight:900;letter-spacing:-.04em;line-height:.98;max-width:16ch;margin-bottom:24px}
+.hero-sub{color:#D9D9DD;font-size:clamp(18px,2.1vw,22px);max-width:44ch;margin-bottom:36px;line-height:1.45}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px}
+.hero-restate{color:var(--on-dark-2);font-size:14.5px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-weight:500}
+.hero-restate .pip{color:#3FD98A;font-weight:800}.hero-restate .sep{color:var(--line-dark)}
+section.block{padding:100px 0}.section-head{max-width:760px;margin-bottom:64px}
+.block h2{font-size:var(--t-h2);margin-bottom:18px;letter-spacing:-.035em}
+.lead{color:var(--ink-2);font-size:19px;max-width:58ch;line-height:1.55}
+.alt{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.svc-list{border-top:2px solid var(--ink)}
+.svc-row{display:grid;grid-template-columns:auto 1.1fr 1.4fr auto;align-items:center;gap:32px;padding:40px 0;border-bottom:1px solid var(--line);transition:.16s ease}
+.svc-row:last-child{border-bottom:2px solid var(--ink)}
+.svc-num{font-family:var(--display);font-weight:900;font-size:var(--t-num);line-height:.85;color:var(--line);letter-spacing:-.04em;transition:.16s ease;min-width:1.6ch}
+.svc-title{font-family:var(--display);font-weight:800;font-size:clamp(24px,2.8vw,32px);letter-spacing:-.03em;line-height:1.02}
+.svc-desc{color:var(--ink-2);font-size:16.5px;line-height:1.5;max-width:42ch}
+.svc-mark{justify-self:end;color:var(--accent);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:8px;opacity:0;transition:.16s ease}
+.svc-mark::after{content:"\2192";font-size:18px}
+.svc-row:hover .svc-num{color:var(--accent)}.svc-row:hover .svc-mark{opacity:1}
+.map-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:64px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.chip{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--ink);padding:11px 20px;font-weight:700;font-size:14.5px;color:var(--ink)}
+.chip .pin{width:8px;height:8px;background:var(--accent);display:block}
+.map-panel{position:relative;border:1px solid var(--line);background:#fff}
+.about{display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:stretch}
+.about-photo{position:relative;background:radial-gradient(circle at 38% 32%,#2C2C33,#0E0E10);aspect-ratio:4/5;display:flex;align-items:flex-end;padding:20px;border:1px solid var(--line)}
+.about-photo::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--accent)}
+.about-photo .photo-slot{position:static;background:rgba(255,255,255,.06)}
+.about-body{display:flex;flex-direction:column;justify-content:center}
+.about blockquote{font-family:var(--display);font-weight:800;font-size:clamp(26px,3.4vw,40px);letter-spacing:-.03em;line-height:1.1}
+.about blockquote .hl{color:var(--accent)}
+.about .sig{margin-top:32px;padding-top:24px;border-top:1px solid var(--line);font-weight:800;font-size:17px}
+.about .sig span{display:block;font-weight:500;color:var(--ink-2);font-size:14.5px;margin-top:4px}
+.dark-section{background:var(--ink);color:var(--on-dark)}
+.review{max-width:840px;margin:0 auto;text-align:center}
+.review .stars{color:#fff;font-size:20px;letter-spacing:5px;margin-bottom:28px}
+.review blockquote{font-family:var(--display);font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-.035em;color:#fff;line-height:1.08}
+.review cite{display:block;margin-top:28px;font-style:normal;font-weight:700;color:var(--on-dark-2);font-size:14.5px;letter-spacing:.04em;text-transform:uppercase}
+.contact{background:var(--paper-2);border-top:2px solid var(--ink)}
+.contact-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:start;margin-top:8px}
+.field{margin-bottom:18px}.field label{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:9px}
+.field input,.field textarea{width:100%;background:var(--paper);border:1px solid var(--line);padding:16px 17px;color:var(--ink);font-family:var(--sans);font-size:16px}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.contact form .btn{width:100%;margin-top:6px}
+.contact-direct{border:1px solid var(--line);padding:32px;background:var(--paper)}
+.direct-call{display:flex;align-items:center;gap:15px;padding:18px;background:var(--accent);color:#fff;margin-bottom:14px}.direct-call:hover{background:var(--accent-deep)}
+.direct-call .ic{font-size:24px}.direct-call .lbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.1em;opacity:.85;font-weight:700}
+.direct-call .num{font-family:var(--display);font-weight:900;font-size:24px;letter-spacing:-.02em}
+.hours{list-style:none;font-size:14.5px}.hours li{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);color:var(--ink-2)}.hours li strong{color:var(--ink);font-weight:700}
+.hours .ooh-row{color:var(--green);font-weight:800;border-bottom:0;padding-top:16px}
+footer{background:var(--ink);color:var(--on-dark);padding:72px 0 40px;border-top:6px solid var(--accent)}
+.foot-inner{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px}
+.foot-brand{font-family:var(--display);font-size:22px;font-weight:900;letter-spacing:-.04em;text-transform:uppercase;color:#fff}
+.foot-gs{margin-top:14px;font-size:14px;color:var(--on-dark-2);line-height:1.6;max-width:34ch}.foot-gs strong{color:#fff}
+.foot-col h4{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--on-dark-2);margin-bottom:16px;font-weight:800}
+.foot-col a,.foot-col p{display:block;color:#fff;font-size:15px;margin-bottom:11px;font-weight:500}.foot-col a:hover{color:var(--accent-soft)}
+.foot-bottom{margin-top:56px;padding-top:26px;border-top:1px solid var(--line-dark);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--on-dark-2);font-size:12.5px}
+@media(max-width:980px){.map-grid,.contact-grid{grid-template-columns:1fr;gap:40px}.about{grid-template-columns:1fr;gap:36px}.about-photo{aspect-ratio:16/10}}
+@media(max-width:760px){.wrap,.nav-inner,.trustbar-inner,.hero-inner{padding-left:22px;padding-right:22px}.nav-links{display:none}.tb-spacer{display:none}.trustbar-inner{gap:14px}section.block{padding:64px 0}.field-row{grid-template-columns:1fr}.foot-inner{grid-template-columns:1fr;gap:36px}.hero{min-height:560px}.hero-inner{padding:56px 22px}.svc-row{grid-template-columns:auto 1fr;gap:18px 20px;padding:30px 0}.svc-num{font-size:38px}.svc-desc{grid-column:1 / -1;max-width:none}.svc-mark{display:none}.hero-actions .btn{flex:1 1 auto}}
+</style>
+</head>
+<body>
+
+<div class="trustbar"><div class="trustbar-inner">
+  {isGas ? (
+    <div class="gs-lockup">
+      <div class="gs-badge">GAS<br>SAFE<span>REGISTER</span></div>
+      <div class="gs-text"><strong>Gas Safe Registered</strong><span class="sub"><span class="gs-tick">✓</span> No. {c.gas_safe_reg}</span></div>
+    </div>
+  ) : (
+    <div class="gs-lockup">
+      <div class="cert-mark">NICEIC</div>
+      <div class="gs-text"><strong>NICEIC Approved</strong><span class="sub"><span class="gs-tick">✓</span> No. {c.niceic_reg}</span></div>
+    </div>
+  )}
+  <div class="tb-div"></div>
+  {c.out_of_hours && <div class="ooh"><span class="dot"></span> Out of hours available</div>}
+  <div class="tb-spacer"></div>
+  <div class="tb-stars">★★★★★</div>
+  <div class="tb-meta"><strong>{c.rating}</strong> on {c.rating_source}</div>
+  <div class="tb-div"></div>
+  <div class="tb-meta"><strong>{c.years}</strong> on the tools</div>
+</div></div>
+
+<nav><div class="nav-inner">
+  <a class="brand" href="#">{c.business_name}</a>
+  <div class="nav-links">
+    <a href="#services">Services</a><a href="#areas">Areas covered</a><a href="#about">About</a><a href="#contact">Contact</a>
+  </div>
+  <a class="nav-call" href={`tel:${tel}`}>☎ Call us</a>
+</div></nav>
+
+<header class="hero">
+  <div class="photo-slot">Real van / engineer photo here at build</div>
+  <div class="hero-inner">
+    <span class="eyebrow">{c.eyebrow}</span>
+    <h1>{c.hero_headline}</h1>
+    <p class="hero-sub">{c.hero_sub}</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href={`tel:${tel}`}>☎ Call {c.business_name}</a>
+      <a class="btn btn-light" href={`https://wa.me/${tel.replace('+','')}`}>WhatsApp us</a>
+    </div>
+    <p class="hero-restate">
+      {c.promises.map((p, i) => (<>{i > 0 && <span class="sep">/</span>}<span><span class="pip">✓</span> {p}</span></>))}
+    </p>
+  </div>
+</header>
+
+<section class="block" id="services"><div class="wrap">
+  <div class="section-head"><p class="kicker">What we do</p>
+    <h2>Straightforward work, done right.</h2>
+    <p class="lead">Certified for every job. Tidy, and standing behind the work — no call-centre, no sales patter.</p></div>
+  <div class="svc-list">
+    {c.services.map((s) => (
+      <div class="svc-row">
+        <div class="svc-num">{s.num}</div>
+        <div class="svc-title">{s.title}</div>
+        <div class="svc-desc">{s.desc}</div>
+        <a class="svc-mark" href="#contact">{s.cta}</a>
+      </div>
+    ))}
+  </div>
+</div></section>
+
+<section class="block alt" id="areas"><div class="wrap"><div class="map-grid">
+  <div class="map-panel">
+    <svg viewBox="0 0 600 420" width="100%" role="img" aria-label={`Indicative service area covering ${c.areas.join(' and ')}`}>
+      <rect width="600" height="420" fill="#F7F7F5"></rect>
+      <g stroke="#E4E4E2" stroke-width="2" fill="none"><path d="M0 100 L190 130 L320 86 L600 140"></path><path d="M44 0 L130 170 L96 420"></path><path d="M600 240 L390 218 L260 286 L0 330"></path><path d="M330 0 L350 196 L470 420"></path></g>
+      <circle cx="296" cy="198" r="166" fill={c.dna.accent} fill-opacity=".07" stroke={c.dna.accent} stroke-width="2" stroke-dasharray="7 7"></circle>
+      <rect x="287" y="189" width="18" height="18" fill={c.dna.accent}></rect>
+      <text x="296" y="178" text-anchor="middle" font-family="Inter,sans-serif" font-size="16" font-weight="800" fill="#0E0E10">{c.areas[0]}</text>
+    </svg>
+  </div>
+  <div>
+    <p class="kicker">Areas we cover</p>
+    <h2>{c.areas.join(', ')} & {c.area_blurb}.</h2>
+    <p class="lead">Inside the circle, we can usually get to you the same day. Not sure? Drop your postcode in the form and we'll confirm.</p>
+    <div class="chips">{c.areas.map((a) => (<span class="chip"><span class="pin"></span> {a}</span>))}</div>
+  </div>
+</div></div></section>
+
+<section class="block" id="about"><div class="wrap"><div class="about">
+  <div class="about-photo"><span class="photo-slot">Photo at work here at build</span></div>
+  <div class="about-body">
+    <p class="kicker">About</p>
+    <blockquote set:html={aboutHtml}></blockquote>
+    <p class="sig">{c.about_sig_name}<span>{c.about_sig_line}</span></p>
+  </div>
+</div></div></section>
+
+<section class="block dark-section"><div class="wrap"><div class="review">
+  <div class="stars">★★★★★</div>
+  <blockquote>“{c.review_quote}”</blockquote>
+  <cite>{c.review_cite}</cite>
+</div></div></section>
+
+<section class="block contact" id="contact"><div class="wrap">
+  <div class="section-head"><p class="kicker">Get in touch</p>
+    <h2>Tell us what's up — we'll call you back.</h2>
+    <p class="lead">Quickest is to call. Or leave your details and postcode and we'll get straight back to you.</p></div>
+  <div class="contact-grid">
+    <form onsubmit="return false">
+      <div class="field-row">
+        <div class="field"><label for="n">Name</label><input id="n" type="text" placeholder="Your name" /></div>
+        <div class="field"><label for="p">Phone</label><input id="p" type="tel" placeholder="Best number to reach you" /></div>
+      </div>
+      <div class="field"><label for="pc">Postcode</label><input id="pc" type="text" placeholder="so we can check we cover you" /></div>
+      <div class="field"><label for="m">What do you need?</label><textarea id="m" rows="4" placeholder="Boiler not firing up, a quote, an EICR…"></textarea></div>
+      <button class="btn btn-primary" type="submit">Send & we'll call you back</button>
+    </form>
+    <div class="contact-direct">
+      <a class="direct-call" href={`tel:${tel}`}><span class="ic">☎</span><span><span class="lbl">Call direct</span><span class="num">{telDisplay}</span></span></a>
+      <ul class="hours">
+        {c.hours.map(([d, h]) => (<li><span>{d}</span><strong>{h}</strong></li>))}
+        {c.out_of_hours && <li class="ooh-row"><span>Out of hours</span><span><span class="dot"></span> Available — call us</span></li>}
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="foot-inner">
+    <div>
+      <div class="foot-brand">{c.business_name}</div>
+      <p class="foot-gs"><strong>{isGas ? `Gas Safe Registered — No. ${c.gas_safe_reg}.` : `NICEIC Approved — No. ${c.niceic_reg}.`}</strong> {c.trade} across {c.areas.join(' & ')}.</p>
+    </div>
+    <div class="foot-col"><h4>Site</h4><a href="#services">Services</a><a href="#areas">Areas covered</a><a href="#about">About</a><a href="#contact">Contact</a></div>
+    <div class="foot-col"><h4>Get in touch</h4><a href={`tel:${tel}`}>{telDisplay}</a><a href={`https://wa.me/${tel.replace('+','')}`}>WhatsApp</a></div>
+  </div>
+  <div class="foot-bottom"><span>© 2026 {c.business_name} (demo).</span><span>Site by TradesOnTheMap.</span></div>
+</div></footer>
+
+</body>
 </html>
