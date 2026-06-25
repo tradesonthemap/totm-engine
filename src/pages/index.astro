@@ -1,0 +1,17 @@
+---
+import clients from '../data/clients.json';
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TOTM Astro Pilot — factory index</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body style="font:17px/1.6 system-ui;max-width:680px;margin:3rem auto;padding:0 1.25rem">
+    <h1>TOTM Astro Pilot</h1>
+    <p>Proof: per-client JSON → <code>getStaticPaths</code> → static pages. {clients.length} demo clients, zero JS shipped.</p>
+    <ul>{clients.map((c) => <li><a href={`/${c.slug}/`}>{c.business_name}</a> — {c.dna.family}</li>)}</ul>
+  </body>
+</html>
