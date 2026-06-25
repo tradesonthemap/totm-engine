@@ -3,67 +3,212 @@
     "slug": "dave-demo-heating",
     "business_name": "Dave Demo Heating",
     "trade": "Gas Engineer",
+    "eyebrow": "Gas Safe Heating Engineer — Leeds & Wakefield",
+    "hero_headline": "The heating engineer who answers his own phone.",
+    "hero_sub": "Boiler servicing, repairs and installs across Leeds. Tidy work, fair prices, same-day where I can.",
     "areas": [
       "Leeds",
       "Wetherby",
       "Otley"
     ],
-    "business_number": "+441130000001",
-    "tagline": "Edited via the pipeline — git-driven content change.",
-    "services": [
-      "Boiler service",
-      "Breakdown repair",
-      "Landlord certificates"
+    "area_blurb": "the LS postcodes",
+    "business_number_display": "0113 000 0001",
+    "business_number_e164": "+441130000001",
+    "gas_safe_reg": "123456",
+    "rating": "5.0",
+    "rating_source": "Google",
+    "years": "20 years",
+    "promises": [
+      "Same-day where I can",
+      "No call-out hard sell",
+      "Out of hours available"
     ],
+    "services": [
+      {
+        "num": "01",
+        "title": "Boiler Servicing",
+        "desc": "Annual service, fully certified, with proper gas safety checks. Keeps your warranty valid and your boiler safe.",
+        "cta": "Book a service"
+      },
+      {
+        "num": "02",
+        "title": "Breakdowns & Repairs",
+        "desc": "Same-day where possible. No heat, no hot water, a leak — ring me and I'll tell you straight. No call-out hard sell.",
+        "cta": "Call now"
+      },
+      {
+        "num": "03",
+        "title": "New Installs",
+        "desc": "Boiler swaps and full installs, fitted clean and certified. I leave your house tidier than I found it.",
+        "cta": "Get a quote"
+      }
+    ],
+    "about_quote": "Twenty years on the tools and I still answer my own phone. I turn up when I say I will, and I leave your house tidier than I found it.",
+    "about_highlight": "answer my own phone.",
+    "about_sig_name": "Dave (demo)",
+    "about_sig_line": "Dave Demo Heating — Gas Safe No. 123456",
+    "review_quote": "Quick, tidy, professional. Sorted the boiler same day.",
+    "review_cite": "Jane M, Leeds — Google review",
+    "hours": [
+      [
+        "Mon – Fri",
+        "08:00 – 18:00"
+      ],
+      [
+        "Saturday",
+        "09:00 – 13:00"
+      ]
+    ],
+    "out_of_hours": true,
     "dna": {
       "family": "bold_industrial",
       "hero": "HERO-03",
-      "palette": "ink-amber",
-      "accent": "#f59e0b"
+      "palette": "ink-electric",
+      "accent": "#0A4FFF",
+      "accent_deep": "#0B3FD9",
+      "accent_soft": "#6E97FF",
+      "trade_tag": "gas"
     }
   },
   {
     "slug": "pennine-demo-plumbing",
     "business_name": "Pennine Demo Plumbing",
     "trade": "Plumber",
+    "eyebrow": "Local Plumber — Sheffield & Rotherham",
+    "hero_headline": "Local plumbing you can actually rely on.",
+    "hero_sub": "Leaks, bathrooms and emergencies across Sheffield. No call-out fee, straight answers, tidy work.",
     "areas": [
       "Sheffield",
       "Rotherham"
     ],
-    "business_number": "+441140000002",
-    "tagline": "Local plumbing you can rely on — no call-out fee.",
-    "services": [
-      "Leaks & repairs",
-      "Bathroom installs",
+    "area_blurb": "the S postcodes",
+    "business_number_display": "0114 000 0002",
+    "business_number_e164": "+441140000002",
+    "gas_safe_reg": "654321",
+    "rating": "4.9",
+    "rating_source": "Google",
+    "years": "12 years",
+    "promises": [
+      "No call-out fee",
+      "Straight answers",
       "Emergency callout"
     ],
+    "services": [
+      {
+        "num": "01",
+        "title": "Leaks & Repairs",
+        "desc": "Dripping taps to burst pipes — found fast, fixed properly, mess cleaned up before I leave.",
+        "cta": "Call now"
+      },
+      {
+        "num": "02",
+        "title": "Bathroom Installs",
+        "desc": "Full bathrooms fitted to a standard you'd show your neighbours. Clean lines, no leaks, no fuss.",
+        "cta": "Get a quote"
+      },
+      {
+        "num": "03",
+        "title": "Emergency Callout",
+        "desc": "Water where it shouldn't be? Ring me. I'll talk you through the stopcock and get to you quick.",
+        "cta": "Emergency call"
+      }
+    ],
+    "about_quote": "I'd rather do one job properly than three in a rush. You get me, not a call centre, and a price that doesn't change at the door.",
+    "about_highlight": "You get me, not a call centre,",
+    "about_sig_name": "Pennine (demo)",
+    "about_sig_line": "Pennine Demo Plumbing — Sheffield",
+    "review_quote": "Turned up on time, fixed the leak, fair price. Booked him for the bathroom now.",
+    "review_cite": "Mark T, Sheffield — Google review",
+    "hours": [
+      [
+        "Mon – Fri",
+        "07:30 – 18:00"
+      ],
+      [
+        "Saturday",
+        "08:00 – 14:00"
+      ]
+    ],
+    "out_of_hours": true,
     "dna": {
       "family": "clean_minimal",
       "hero": "HERO-06",
       "palette": "slate-teal",
-      "accent": "#0d9488"
+      "accent": "#0E7C6B",
+      "accent_deep": "#0A5F52",
+      "accent_soft": "#4FD1B5",
+      "trade_tag": "plumbing"
     }
   },
   {
     "slug": "york-demo-electrics",
     "business_name": "York Demo Electrics",
     "trade": "Electrician",
+    "eyebrow": "NICEIC Electrician — York & Selby",
+    "hero_headline": "An electrician who turns up and explains it plainly.",
+    "hero_sub": "Rewires, EICRs and EV chargers across York. Certified, neat, and no jargon at the door.",
     "areas": [
       "York",
       "Selby"
     ],
-    "business_number": "+441900000003",
-    "tagline": "NICEIC electrician — rewires, EICRs, EV chargers.",
-    "services": [
-      "Rewires",
-      "EICR certs",
-      "EV charger install"
+    "area_blurb": "the YO postcodes",
+    "business_number_display": "01904 000 003",
+    "business_number_e164": "+441900000003",
+    "gas_safe_reg": "",
+    "niceic_reg": "D998877",
+    "rating": "5.0",
+    "rating_source": "Google",
+    "years": "15 years",
+    "promises": [
+      "Certified & insured",
+      "Tidy, no mess",
+      "Clear fixed quotes"
     ],
+    "services": [
+      {
+        "num": "01",
+        "title": "Rewires",
+        "desc": "Full and partial rewires done clean, certified, and signed off — minimal disruption, no surprises.",
+        "cta": "Get a quote"
+      },
+      {
+        "num": "02",
+        "title": "EICR Certificates",
+        "desc": "Landlord and homeowner safety reports, done thoroughly with a plain-English summary of what matters.",
+        "cta": "Book an EICR"
+      },
+      {
+        "num": "03",
+        "title": "EV Charger Installs",
+        "desc": "Home charge points fitted and certified, sited where you actually want them. OZEV-grant savvy.",
+        "cta": "Ask about EV"
+      }
+    ],
+    "about_quote": "I'll tell you what needs doing now and what can wait. No scare tactics, no jargon — just safe work, certified and tidy.",
+    "about_highlight": "what can wait.",
+    "about_sig_name": "York (demo)",
+    "about_sig_line": "York Demo Electrics — NICEIC No. D998877",
+    "review_quote": "Explained everything, no jargon, left the place spotless. Will use again.",
+    "review_cite": "Priya R, York — Google review",
+    "hours": [
+      [
+        "Mon – Fri",
+        "08:00 – 17:30"
+      ],
+      [
+        "Saturday",
+        "By arrangement"
+      ]
+    ],
+    "out_of_hours": false,
     "dna": {
       "family": "bold_industrial",
       "hero": "HERO-03",
-      "palette": "ink-amber",
-      "accent": "#eab308"
+      "palette": "ink-violet",
+      "accent": "#6D28D9",
+      "accent_deep": "#5B21B6",
+      "accent_soft": "#A78BFA",
+      "trade_tag": "electrical"
     }
   }
 ]
