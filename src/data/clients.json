@@ -1,0 +1,69 @@
+[
+  {
+    "slug": "dave-demo-heating",
+    "business_name": "Dave Demo Heating",
+    "trade": "Gas Engineer",
+    "areas": [
+      "Leeds",
+      "Wetherby",
+      "Otley"
+    ],
+    "business_number": "+441130000001",
+    "tagline": "Edited via the pipeline — git-driven content change.",
+    "services": [
+      "Boiler service",
+      "Breakdown repair",
+      "Landlord certificates"
+    ],
+    "dna": {
+      "family": "bold_industrial",
+      "hero": "HERO-03",
+      "palette": "ink-amber",
+      "accent": "#f59e0b"
+    }
+  },
+  {
+    "slug": "pennine-demo-plumbing",
+    "business_name": "Pennine Demo Plumbing",
+    "trade": "Plumber",
+    "areas": [
+      "Sheffield",
+      "Rotherham"
+    ],
+    "business_number": "+441140000002",
+    "tagline": "Local plumbing you can rely on — no call-out fee.",
+    "services": [
+      "Leaks & repairs",
+      "Bathroom installs",
+      "Emergency callout"
+    ],
+    "dna": {
+      "family": "clean_minimal",
+      "hero": "HERO-06",
+      "palette": "slate-teal",
+      "accent": "#0d9488"
+    }
+  },
+  {
+    "slug": "york-demo-electrics",
+    "business_name": "York Demo Electrics",
+    "trade": "Electrician",
+    "areas": [
+      "York",
+      "Selby"
+    ],
+    "business_number": "+441900000003",
+    "tagline": "NICEIC electrician — rewires, EICRs, EV chargers.",
+    "services": [
+      "Rewires",
+      "EICR certs",
+      "EV charger install"
+    ],
+    "dna": {
+      "family": "bold_industrial",
+      "hero": "HERO-03",
+      "palette": "ink-amber",
+      "accent": "#eab308"
+    }
+  }
+]

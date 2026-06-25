@@ -1,0 +1,16 @@
+# deps + build
+node_modules/
+dist/
+.astro/
+
+# PII — NEVER commit (estate hard rule, even on a pilot)
+*-pii.*
+*pii*.csv
+targets*.csv
+**/stronghold/
+.env
+.env.*
+
+# estate sidecars
+*.meta.json
+.*.meta.json

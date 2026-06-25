@@ -1,0 +1,54 @@
+name: ci
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Fail-closed PII gate — the structural fence's teeth (ADR-0014 / Council SCR-0001).
+  # Display data only EVER lives in git. This blocks PII fields + raw UK mobile/email from reaching the repo.
+  pii-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Block PII field names in code + data (docs may discuss them)
+        run: |
+          if git grep -nIE '(^|[^a-z])(contact_mobile|contact_email|gas_safe_no|legal_name|registrant_name|stripe_customer_id|stripe_sub_id)' -- 'src/' ':!*.md'; then
+            echo "::error::PII field name in code/data. PII lives in the TOTM vault, never git."; exit 1
+          fi
+      - name: Block raw UK mobile / email values
+        run: |
+          if git grep -nIE '(\+447[0-9]{9}|\b07[0-9]{9}\b|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})' -- 'src/data/*.json'; then
+            echo "::error::Raw personal number/email in client data. Use business_number; PII to the vault."; exit 1
+          fi
+
+  build:
+    needs: pii-gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: 'npm' }
+      - run: npm ci
+      - name: Build (fails closed on bad data / unknown genome CODE)
+        run: npm run build
+      - run: test -f dist/index.html
+      - uses: actions/upload-artifact@v4
+        with: { name: dist, path: dist }
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: 'npm' }
+      - run: npm ci && npm run build
+      # INTERIM: token-in-CI. TOTM prod target = CF Pages Git integration (no token) per ADR-0014.
+      - run: npx wrangler@4 pages deploy dist --project-name=totm-engine
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
