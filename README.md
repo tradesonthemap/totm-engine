@@ -33,3 +33,4 @@ Doctrine: KB-DCT-ADR-REF-0008, bws ADR-0014, Rolls SCR-0001/0002. Schema: Elif Â
 | Version | Date | Status | Summary |
 |---|---|---|---|
 | 0.1.0 | 2026-06-25 | engine | Git-first scaffold in the real org via PR. Factory + 0-JS + fail-loud genome + PII-gate CI. |
+<!-- ci smoke 2026-06-25T17:40:51Z -->
